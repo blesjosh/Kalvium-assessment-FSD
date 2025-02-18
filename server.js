@@ -13,9 +13,9 @@ app.get('./signup', (req,res) =>{
 
 })
 
-const {username,password,email,dateofbirth} = req.body;
 
 app.post('/signup', (req,res) =>{
+    const {username,password,email,dateofbirth} = req.body;
     if (!username){
         return res.status(400).send("Username cannot be empty");
     }
@@ -34,7 +34,7 @@ app.post('/signup', (req,res) =>{
 
     else if (!password.length <8 && !password.length >=16){   
         return res.status(400).send("The password must be greater than 8 and equal to 16 characters")
-}});
+};
 
     res.status(201).json({
         message: "User signed up successfully",
@@ -44,9 +44,9 @@ app.post('/signup', (req,res) =>{
         email,
         dateofbirth,
     }
-});
+})});
 
 app.listen(port, () =>{
-    console.lod(`Server is listening to http://localhost:${port}`)
+    console.log(`Server is listening to http://localhost:${port}`)
 });
 
