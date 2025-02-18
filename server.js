@@ -1,52 +1,49 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const {error} = require('console');
+const express = require('express');
 
-app.use(express.json);
+const app = express();
+const port = 8000;
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send("Hello World!")
+    res.send("Hi! this server is running");
 });
 
-app.get('./signup', (req,res) =>{
-    res.send("Sign up Page")
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
 
-})
+app.post('/singup', (req, res) => {
+    const{username, email, password, dateOfBirth} = req.body;
 
-
-app.post('/signup', (req,res) =>{
-    const {username,password,email,dateofbirth} = req.body;
-    if (!username){
-        return res.status(400).send("Username cannot be empty");
+    if(!username){
+        return res.status(400).json({error: "Username cannot be empty"});
     }
 
-    else if(!password){
-        return res.status(400).send("Password cannot be empty")
+    if(!email){
+        return res.status(400).json({error: "Email cannot be empty"});
     }
 
-    else if(!email){
-        return res.status(400).send("Email cannot be empty")
+    if(!password){
+        return res.status(400).json({error: "Password cannot be empty"});
     }
 
-    else if(!dateofbirth){
-        return res.status(400).send("Date of birth cannot be empty")
+    if(password.length < 8 && password.length >= 16){
+        return res.status(400).json({error: "Password length should be greater than 8 or less than or equal to 16"});
     }
 
-    else if (!password.length <8 && !password.length >=16){   
-        return res.status(400).send("The password must be greater than 8 and equal to 16 characters")
-};
+    if(dateOfBirth){
+        return res.status(400).json({error: "Date of Birth cannot be empty"});
+    }
 
     res.status(201).json({
         message: "User signed up successfully",
 
-    user:{
-        username,
-        email,
-        dateofbirth,
-    }
-})});
-
-app.listen(port, () =>{
-    console.log(`Server is listening to http://localhost:${port}`)
+        user:{
+            username,
+            email,
+            dateOfBirth,
+        }
+    });
 });
-
